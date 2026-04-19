@@ -1,7 +1,7 @@
-
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 import numpy as np
+import os
 from io import BytesIO
 from PIL import Image, ImageOps
 import tensorflow as tf
@@ -11,7 +11,10 @@ app = FastAPI()
 origins = [
     "http://localhost",
     "http://localhost:3000",
+    "http://localhost:8501",
+    "*"
 ]
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -20,7 +23,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-MODEL = tf.keras.models.load_model("../models/3.keras")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "..", "models", "3.keras")
+
+MODEL = tf.keras.models.load_model(MODEL_PATH)
 
 CLASS_NAMES = ['Benign_tumors', 'Moles', 'Normal', 'SkinCancer']
 

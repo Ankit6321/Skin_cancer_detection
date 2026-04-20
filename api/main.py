@@ -28,7 +28,7 @@ app.add_middleware(
 )
 
 tf.keras.backend.clear_session()
-MODEL = tf.keras.models.load_model("3.keras")
+MODEL = tf.keras.models.load_model("model.keras")
 
 CLASS_NAMES = ['Benign_tumors', 'Moles', 'Normal', 'SkinCancer']
 

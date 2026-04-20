@@ -3,48 +3,47 @@ import requests
 from PIL import Image
 import io
 
-# 1. Page Configuration
+try:
+    requests.get("https://skin-disease-api-onsr.onrender.com/ping", timeout=1)
+except:
+    pass
+
+url = st.secrets["API_URL"]
+
 st.set_page_config(page_title="SkinAI Clinical", page_icon="🩺", layout="wide")
 
-# 2. Refined Clinical Styling
-# 2. Refined Clinical Styling
 st.markdown("""
     <style>
-    /* Global Background */
     .stApp { background-color: #FFFFFF; font-family: 'Inter', sans-serif; }
     
-    /* 1. Reduce top padding significantly */
     .block-container { 
         max-width: 1200px; 
-        padding-top: 0.5rem !important; /* Minimal gap at the very top */
+        padding-top: 0.5rem !important;
     }
 
-    /* 2. Compact Header Styling */
     h1 {
         color: #0F172A !important;
         font-weight: 800;
         font-size: 3rem !important;
         text-align: center;
-        margin-top: 0px !important;    /* Remove top margin */
-        margin-bottom: 5px !important; /* Close gap to subtitle */
+        margin-top: 0px !important;
+        margin-bottom: 5px !important;
     }
     .subtitle {
         color: #64748B;
         text-align: center;
-        margin-bottom: 1.5rem;         /* Reduced gap before the main card */
+        margin-bottom: 1.5rem;
         font-size: 1rem;
     }
 
-    /* Professional Card */
     .clinical-container {
         background-color: #FFFFFF;
         border: 1px solid #E2E8F0;
         border-radius: 20px;
-        padding: 30px;                /* Slightly tighter internal padding */
+        padding: 30px;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     }
 
-    /* File Uploader styling */
     [data-testid="stFileUploader"] {
         background-color: #F8FAFC;
         border: 2px dashed #CBD5E1;
@@ -52,7 +51,6 @@ st.markdown("""
         padding: 10px;
     }
     
-    /* Buttons */
     .stButton>button {
         width: 100%;
         background-color: #2563EB !important;
@@ -63,7 +61,6 @@ st.markdown("""
         border: none;
     }
 
-    /* Result Card Styling */
     .result-card {
         background-color: #F0FDF4;
         border: 1px solid #BBF7D0;
@@ -72,16 +69,13 @@ st.markdown("""
     }
     .result-value { color: #14532D; font-size: 1.6rem; font-weight: 800; margin: 0; }
 
-    /* Hide Default UI */
     #MainMenu, footer, header { visibility: hidden; }
     </style>
     """, unsafe_allow_html=True)
 
-# 3. Header
 st.markdown("<h1>Skin Analysis</h1>", unsafe_allow_html=True)
 st.markdown("<p class='subtitle'>Advanced clinical AI for preliminary dermatological classification.</p>", unsafe_allow_html=True)
 
-# 4. Main Layout
 _, col_main, _ = st.columns([1, 10, 1])
 
 with col_main:
@@ -105,14 +99,13 @@ with col_main:
                     try:
                         buf = io.BytesIO()
                         image.save(buf, format="JPEG")
-                        response = requests.post("https://skin-disease-api-onsr.onrender.com/predict", files={"file": buf.getvalue()})
+                        response = requests.post(url, files={"file": buf.getvalue()})
                         
                         if response.status_code == 200:
                             res = response.json()
                             pred_class = res['class']
-                            conf = res['confidence'] * 100 # Convert to percentage
+                            conf = res['confidence'] * 100
                             
-                            # Professional Output Display
                             st.markdown(f"""
                                 <div class="result-card">
                                     <p class="result-label">DIAGNOSTIC PREDICTION</p>
@@ -134,5 +127,4 @@ with col_main:
                 st.info("Please upload a lesion image to initiate analysis.")
     st.markdown('</div>', unsafe_allow_html=True)
 
-# 5. Simple Footer
 st.markdown("<p style='font-size: 0.8rem; color: #94A3B8; text-align: center; margin-top: 50px;'>Clinical Portal v1.0 • Protected by AES-256</p>", unsafe_allow_html=True)

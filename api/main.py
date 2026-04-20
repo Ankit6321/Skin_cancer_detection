@@ -5,6 +5,10 @@ import os
 from io import BytesIO
 from PIL import Image, ImageOps
 import tensorflow as tf
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+os.environ['OMP_NUM_THREADS'] = '1'
+os.environ['TF_NUM_INTRAOP_THREADS'] = '1'
+os.environ['TF_NUM_INTEROP_THREADS'] = '1'
 
 app = FastAPI()
 
@@ -23,10 +27,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = os.path.join(BASE_DIR, "..", "models", "3.keras")
-
-MODEL = tf.keras.models.load_model(MODEL_PATH)
+tf.keras.backend.clear_session()
+MODEL = tf.keras.models.load_model("3.keras")
 
 CLASS_NAMES = ['Benign_tumors', 'Moles', 'Normal', 'SkinCancer']
 

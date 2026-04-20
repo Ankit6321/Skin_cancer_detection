@@ -120,11 +120,19 @@ with col_main:
                                 </div>
                             """, unsafe_allow_html=True)
                             
-                            st.markdown("<p style='color: #94A3B8; font-size: 0.75rem; margin-top: 20px;'>⚠️ Analysis intended for educational evaluation. Consult a MD for diagnosis.</p>", unsafe_allow_html=True)
+                            st.markdown("""
+                                <div style="background-color: #FEF2F2; border: 1px solid #FEE2E2; padding: 15px; border-radius: 8px; margin-top: 20px;">
+                                    <p style="margin: 0; color: #991B1B; font-size: 0.85rem; line-height: 1.4;">
+                                        <strong>⚠️ Medical Disclaimer:</strong> This platform is provided for <b>educational evaluation only</b>. 
+                                        The AI-generated insights are not clinically certified and do not constitute a formal diagnosis. 
+                                        Always consult a <b>Licensed Medical Professional (MD)</b> for definitive dermatological assessment and treatment.
+                                    </p>
+                                </div>
+                            """, unsafe_allow_html=True)
                     except Exception as e:
                         st.error("Connection failed. Check API deployment status.")
             else:
                 st.info("Please upload a lesion image to initiate analysis.")
     st.markdown('</div>', unsafe_allow_html=True)
 
-st.markdown("<p style='font-size: 0.8rem; color: #94A3B8; text-align: center; margin-top: 50px;'>Clinical Portal v1.0 • Protected by AES-256</p>", unsafe_allow_html=True)
+st.markdown("<p style='font-size: 0.8rem; color: #94A3B8; text-align: center; margin-top: 50px;'>Clinical Portal v1.0</p>", unsafe_allow_html=True)

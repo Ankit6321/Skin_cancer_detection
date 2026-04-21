@@ -1,5 +1,6 @@
 import streamlit as st
 import requests
+import os
 from PIL import Image
 import io
 
@@ -8,7 +9,10 @@ try:
 except:
     pass
 
-url = st.secrets["API_URL"]
+try:
+    url = st.secrets["API_URL"]
+except Exception:
+    url = os.getenv("API_URL", "http://127.0.0.1:8000")
 
 st.set_page_config(page_title="SkinAI Clinical", page_icon="🩺", layout="wide")
 
@@ -93,7 +97,7 @@ with col_main:
     with right_ui:
         st.markdown("<p style='font-size: 0.85rem; color: #64748B; font-weight: 600;'>CONTROL PANEL</p>", unsafe_allow_html=True)
         
-        if st.button("🔬 RUN SYSTEM ANALYSIS"):
+        if st.button("Predict"):
             if uploaded_file:
                 with st.spinner("Processing neural layers..."):
                     try:
